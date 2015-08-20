@@ -2,6 +2,7 @@ function dfmat = dfield11(tt, zz, sys)
 
 % DFIELD (partial derivatives of field functions with respect to field
 % variables)
+% Double checked: seem ok
 
 dfmat = zeros(sys.nstatevars,sys.nstatevars);
 

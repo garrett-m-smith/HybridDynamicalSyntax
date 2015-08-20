@@ -1,4 +1,8 @@
 % Test Sensitivity Matrix
+% Use to make sure the derivatives of the field and map functions are
+% entered correctly
+% Ratio of top row to bottom row on output should be approx. equal to base
+% of perturbation (here, pbase = 10)
 
 %levelmax = 0;
 levelmax = 4;
