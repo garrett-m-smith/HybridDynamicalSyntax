@@ -1,7 +1,7 @@
 % Set initial parameter values
 
 sys.statecrit = 0;
-sys.timecrit = 100;  % Not sure what the best idea is here
+sys.timecrit = 1.1;  % Not sure what the best idea is here
 %sys.timecrit = 0.8;
 %sys.timecrit = 0.5;
 sys.weight0 = 0;  % Weight parameter
