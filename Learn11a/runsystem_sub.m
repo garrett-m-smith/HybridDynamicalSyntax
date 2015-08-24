@@ -1,4 +1,4 @@
-function sysout = runsystem_sub(sys)
+function sysout = runsystem_sub(sys_in)
 
 %% runsystem
 
@@ -16,7 +16,7 @@ function sysout = runsystem_sub(sys)
 % Prepare for event handling
 options = odeset('Events', @events, 'AbsTol', 1e-8,'RelTol', 1e-8);
 
-sys.zz = sys.zz0;  % sys.zz0 set in controlling program
+sys_in.zz = sys_in.zz0;  % sys.zz0 set in controlling program
 %zzstart11pre = sys.zz0;
 
 
@@ -26,35 +26,35 @@ fprintf('\nIntegrating vector field...');
 
 tstart = 0;
 
-while tstart < sys.timecrit
-    [tt, zzhist, te, ze, ie] = ode45(@(tt, zz) field(tt, zz, sys), [tstart, sys.timecrit], sys.zz, options);
+while tstart < sys_in.timecrit
+    [tt, zzhist, te, ze, ie] = ode45(@(tt, zz) field(tt, zz, sys_in), [tstart, sys_in.timecrit], sys_in.zz, options);
     
     tstart = tt(end);
-    phi = reshape(zzhist(end, sys.index.vari), sys.nstatevars, sys.nstatevars);
-    sys.zz = zzhist(end, :)';
+    phi = reshape(zzhist(end, sys_in.index.vari), sys_in.nstatevars, sys_in.nstatevars);
+    sys_in.zz = zzhist(end, :)';
     
     if ~isempty(ie)
-        temp = field(te(end), ze(end, :)', sys);
-        fend = temp(1:sys.nstatevars);
+        temp = field(te(end), ze(end, :)', sys_in);
+        fend = temp(1:sys_in.nstatevars);
         switch ie(end)
             case 1
-                dh = [0, 0, -2*sys.zz(3) + 1, 0, 0];
+                dh = [0, 0, -2*sys_in.zz(3) + 1, 0, 0];
                 %dh = [0, 0, 2*sys.zz(3), 0, 0];  % A simple case, for testing
             case 2
                 dh = [0, 0, 0, 0, 1];
         end;
-        proj = eye(sys.nstatevars) - (fend * dh)/(dh * fend);
-        dg = feval(@dmap, te(end), ze(end, :)', sys);
+        proj = eye(sys_in.nstatevars) - (fend * dh)/(dh * fend);
+        dg = feval(@dmap, te(end), ze(end, :)', sys_in);
         
         % Make discrete state change
         fprintf('\nMaking discrete state change...');
-        sys.zz = feval(@map, te(end), ze(end, :)', sys);
-        sys.zz(1:sys.nstatevars) = sys.zz(1:sys.nstatevars) + fend * 1e-10;
+        sys_in.zz = feval(@map, te(end), ze(end, :)', sys_in);
+        sys_in.zz(1:sys_in.nstatevars) = sys_in.zz(1:sys_in.nstatevars) + fend * 1e-10;
         VV = dg * proj * phi;
-        sys.zz(sys.index.vari) = VV(:);
+        sys_in.zz(sys_in.index.vari) = VV(:);
     end;
 end;
 
-tstart
-sysout = sys;
+%tstart
+sysout = sys_in;
 fprintf('\n\n');

@@ -16,7 +16,7 @@ buildsystem;  % This sets sys.zz0
 %% Set initial state
 init0 = sys.zz0(1:sys.nstatevars);
 
-%% Compute end0
+%% Compute end0, i.e., without perturbations
 
 sys = runsystem_sub(sys);
 end0 = sys.zz(1:sys.nstatevars);
@@ -29,12 +29,17 @@ jacval = reshape(sys.zz(sys.index.vari), 5, 5);
 %% Generate perturbation
 % % Test all dimensions at once
 % pert = rand(sys.nstatevars, 1);
-pert = [0, 1, 0, 0, 0]'; % second row w/ 1 leads to 0s and NaN; last elem = 1 ~> 10 instead of 100
+pert = [0, 0, 0, 0, 1]'; 
+% pert(1) = 1: 0.08, 1.1, 0.37
+% pert(2) = 1: NaN
+% pert(3:4) = 1: 100
+% pert(5) = 1: 10
 pert = pert/norm(pert);
 
 % Test one dimension at a time
 %pert = ibit(1, sys.nstatevars);  
-%% Note:  testing time (the last statevar) seems to result in a division by 0
+% Note:  testing time (the last statevar) seems to result in a division by
+% 0; Not any more. Now the ratio is 10.
 
 pbase = 10;
 
@@ -50,9 +55,11 @@ for (clevel = levelrange)
     initval(1:sys.nstatevars) = init0(1:sys.nstatevars) + epsi*pert;
     sys.zz0(1:sys.nstatevars) = initval;
     pertsys = runsystem_sub(sys);
-    endval = pertsys.zz(1:sys.nstatevars);
+    endval = pertsys.zz(1:sys.nstatevars); % result of perturbation
     
-    testquant(clevel) = norm(endval - end0 - epsi*jacval*pert);  
+    testquant(clevel) = norm(endval - end0 - epsi*jacval*pert); 
+    % difference between end value with perturbations and the non-perturbed
+    % system with the perturbations added at the end
 
     
 %     clevel
