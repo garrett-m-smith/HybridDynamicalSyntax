@@ -28,8 +28,8 @@ jacval = reshape(sys.zz(sys.index.vari), 5, 5);
 
 %% Generate perturbation
 % % Test all dimensions at once
-% pert = rand(sys.nstatevars, 1);
-pert = [0, 0, 0, 0, 1]'; 
+pert = rand(sys.nstatevars, 1);
+% pert = [0, 0, 0, 0, 1]'; 
 % pert(1) = 1: 0.08, 1.1, 0.37
 % pert(2) = 1: NaN
 % pert(3:4) = 1: 100
@@ -48,8 +48,8 @@ pbase = 10;
 clear('testquant');
 
 levelrange = 1:levelmax;
-for (clevel = levelrange)
-    epsi = pbase^(-2-clevel);
+for clevel = levelrange
+    epsi = pbase^(-1-clevel);
 
     initval = init0;
     initval(1:sys.nstatevars) = init0(1:sys.nstatevars) + epsi*pert;
