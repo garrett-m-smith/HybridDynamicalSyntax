@@ -31,8 +31,9 @@ sys.zz = sys.zz0;  % sys.zz0 set in buildsystem
 
 %% Run system and learn
 for (ecount = 1:nepochs)
+    tstart = 0;
     % Integrate continuous variables
-    %fprintf('\nIntegrating vector field...');
+    fprintf('\nIntegrating vector field...');
     
     % tt = time, zzhist = solution, te = time of event, ze = solution
     % at time of event, ie = which event criterion was triggered
@@ -45,12 +46,12 @@ for (ecount = 1:nepochs)
     
     if ~isempty(ie) % ie = index of successful event fn. evaluation
         temp = field(te(end), ze(end, :)', sys);
-%         fend = temp(1:sys.nstatevars);
+        %         fend = temp(1:sys.nstatevars);
         f1 = temp(1:sys.nstatevars); % run field from where event happened
         switch ie(end)
             case 1 % field gets close enough to fixed point
                 %dh = [0, 2*sys.zz(2), 2*sys.zz(3), 0, 0, 0, 0, 0]; % why double these values?
-                dh = [0, 0, 2*sys.zz(3) + 1, 0, 0]; % why double these values?
+                dh = [0, 0, -2*sys.zz(3) + 1, 0, 0]; % why double these values?
                 dg = feval(@dmap, te(end), ze(end, :)', sys);
                 sys.zz = feval(@map, te(end), ze(end,:)', sys);
             case 2 % time runs out
@@ -59,12 +60,12 @@ for (ecount = 1:nepochs)
         end
         temp = field(te(end), sys.zz', sys);
         f2 = temp(1:sys.nstatevars);
-%         proj = eye(sys.nstatevars) - (fend * dh)/(dh * fend);
-%         dg = feval(@dmap, te(end), ze(end, :)', sys);
+        %         proj = eye(sys.nstatevars) - (fend * dh)/(dh * fend);
+        %         dg = feval(@dmap, te(end), ze(end, :)', sys);
         
         % Make discrete state change
         fprintf('\nMaking discrete state change...');
-%         sys.zz = feval(@map, te(end), ze(end, :)', sys);
+        %         sys.zz = feval(@map, te(end), ze(end, :)', sys);
         % Sometimes Matlab gets hung up after event; this prevents that:
         sys.zz(1:sys.nstatevars) = sys.zz(1:sys.nstatevars) + f2 * 1e-10;
         VV = (dg + ((f2 - dg * f1) * dh)/(dh * f1)) * phi;
@@ -75,7 +76,7 @@ for (ecount = 1:nepochs)
     
     % Compute sensitivities
     %fprintf('\nComputing sensitivities');
-%     VV = dg * proj * phi;
+    %     VV = dg * proj * phi;
     
     % Store relevant quantities
     ehist(ecount) = sys.zz(1);
@@ -90,7 +91,7 @@ for (ecount = 1:nepochs)
     % only need first row of VV because that contains partial
     % derivatives wrt. the error
     sys.zz(sys.index.weight) = sys.zz(sys.index.weight) + -lrate*VV(1, sys.index.weight)';
-
+    
     sys.zz(1:3) = sys.zz0(1:3);  % Intialize error to 0 and the state to the original initial state
 %     sys.zz(sys.index.error) = sys.zz0(sys.index.error);
 %     sys.zz(sys.index.input) = binornd(1, 0.5); % randomly choose 0 or 1 to det dyn. of field
