@@ -92,10 +92,10 @@ for (ecount = 1:nepochs)
     % derivatives wrt. the error
     sys.zz(sys.index.weight) = sys.zz(sys.index.weight) + -lrate*VV(1, sys.index.weight)';
     
-    sys.zz(1:3) = sys.zz0(1:3);  % Intialize error to 0 and the state to the original initial state
-%     sys.zz(sys.index.error) = sys.zz0(sys.index.error);
-%     sys.zz(sys.index.input) = binornd(1, 0.5); % randomly choose 0 or 1 to det dyn. of field
-%     sys.zz(sys.index.act) = sys.zz0(sys.index.act);
+%     sys.zz(1:3) = sys.zz0(1:3);  % Intialize error to 0 and the state to the original initial state
+    sys.zz(sys.index.error) = sys.zz0(sys.index.error);
+    sys.zz(sys.index.input) = binornd(1, 0.5); % randomly choose 0 or 1 to det dyn. of field
+    sys.zz(sys.index.act) = sys.zz0(sys.index.act);
     sys.zz(sys.index.time) = 0;
     sys.zz(sys.index.vari) = reshape(eye(sys.nstatevars), sys.nstatevars^2, 1);
 end;
@@ -125,6 +125,11 @@ title('Substate histories');
 figure(23);
 plot(durhist);
 title('Duration Sequence');
+
+% Plot weight history
+figure(24);
+plot(subparamhist);
+title('Weight hsitory');
 
 %% Plot flow of learned subsystem
 % figno = 24;

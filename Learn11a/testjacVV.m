@@ -29,7 +29,7 @@ jacval = reshape(sys.zz(sys.index.vari), 5, 5);
 %% Generate perturbation
 % % Test all dimensions at once
 pert = rand(sys.nstatevars, 1);
-% pert = [0, 0, 0, 0, 1]'; 
+% pert = [1, 0, 0, 0, 0]'; 
 % pert(1) = 1: 0.08, 1.1, 0.37
 % pert(2) = 1: NaN
 % pert(3:4) = 1: 100
