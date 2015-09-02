@@ -1,0 +1,20 @@
+Questions for Harry
+
+---Derive the form of the dzvarimat (in field11.m)
+
+---Why does the discrepancy between the separation and the linear estimate of the separation vary with the square of the base?
+
+%% From Learn11
+
+---Is the field function for zz(5) (time) indeed 1?  (proj is mostly NaN if dz5/dt = 0)
+
+---When doing element-by-element testing of Jacobians (e.g., pert = ibit(3, sys.nstatevars), what is being tested?
+
+---Note that when partial derivatives are constantly 0 because a particular variable 
+   is fixed at 0 (because of the choice of initial state and the form of the dynamics), then
+   the perturbation test can fail to uncover an erroneous derivative form.
+
+
+
+
+
