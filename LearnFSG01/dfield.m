@@ -6,12 +6,9 @@ function dfmat = dfield11(tt, zz, sys)
 
 dfmat = zeros(sys.nstatevars,sys.nstatevars);
 
-dfmat(1, 2) = -2*zz(3) + 1;
-dfmat(1, 3) = 2*zz(3) - 2*zz(2);
-%dfmat(1, 3) = 2*zz(3);    % A simple case, for testing
-
-dfmat(3, 2) = 2*zz(3)*zz(4) - 2*zz(3)^2*zz(4);
-%dfmat(3, 3) = 2*zz(2)*zz(4) - zz(4) - 4*zz(2)*zz(3)*zz(4) + 2*zz(3)*zz(4);
-dfmat(3, 3) = zz(4)*(2*zz(2) - 1 - 4*zz(2)*zz(3) + 2*zz(3));
-dfmat(3, 4) = zz(3)*(1 - zz(3))*(2*zz(2) - 1);
-%dfmat(3, 3) = 1 - 2*zz(3);  % A simple case for testing
+dfmat(sys.index.error, sys.index.act1) = 2 * zz(sys.index.act1);
+dfmat(sys.index.error, sys.index.act2) = -2 + 2 * zz(sys.index.act2);
+dfmat(sys.index.act1, sys.index.act1) = 1 - 2 * zz(sys.index.act1) - 1.1 * zz(sys.index.act2);
+dfmat(sys.index.act1, sys.index.act2) = -1.1 * zz(sys.index.act1);
+dfmat(sys.index.act2, sys.index.act1) = -1.1 * zz(sys.index.act2);
+dfmat(sys.index.act2, sys.index.act2) = 1 - 2 * zz(sys.index.act2) - 1.1 * zz(sys.index.act1);

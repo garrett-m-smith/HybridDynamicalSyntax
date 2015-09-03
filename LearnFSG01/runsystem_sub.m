@@ -22,11 +22,10 @@ sys_in.zz = sys_in.zz0;  % sys.zz0 set in controlling program
 
 %% Run system until criterion is met
 % Integrate continuous variables
-fprintf('\nIntegrating vector field...');
-
 tstart = 0;
 
 while tstart < sys_in.timecrit
+    fprintf('\nIntegrating vector field...');
     [tt, zzhist, te, ze, ie] = ode45(@(tt, zz) field(tt, zz, sys_in), [tstart, sys_in.timecrit], sys_in.zz, options);
     
     tstart = tt(end);
@@ -39,7 +38,11 @@ while tstart < sys_in.timecrit
         f1 = temp(1:sys_in.nstatevars); % value of field right at the error surface
         switch ie(end)
             case 1
-                dh = [0, 0, -2*sys_in.zz(3) + 1, 0, 0]; % deriv of error fn.
+                % deriv of event fn.:
+                dh = [0, 0, sys_in.zz(sys_in.index.act1) / sqrt(sys_in.zz(sys_in.index.act1)^2 + ...
+                    1 - 2 * sys_in.zz(sys_in.index.act2) + sys_in.zz(sys_in.index.act2)^2), ...
+                    0.5 * (-2 + 2 * sys_in.zz(sys_in.index.act2)) / sqrt(sys_in.zz(sys_in.index.act1)^2 + ...
+                    1 - 2 * sys_in.zz(sys_in.index.act2) + sys_in.zz(sys_in.index.act2)^2), 0, 0];
                 dg = feval(@dmap, te(end), ze(end, :)', sys_in); % deriv of map
                 sys_in.zz = feval(@map, te(end), ze(end, :)', sys_in); % make the jump
                 %dh = [0, 0, 2*sys.zz(3), 0, 0];  % A simple case, for testing
