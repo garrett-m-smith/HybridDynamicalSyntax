@@ -1,4 +1,4 @@
-function dfmat = dfield11(tt, zz, sys)
+function dfmat = dfield(tt, zz, sys)
 
 % DFIELD (partial derivatives of field functions with respect to field
 % variables)

@@ -45,7 +45,6 @@ while tstart < sys_in.timecrit
                     1 - 2 * sys_in.zz(sys_in.index.act2) + sys_in.zz(sys_in.index.act2)^2), 0, 0];
                 dg = feval(@dmap, te(end), ze(end, :)', sys_in); % deriv of map
                 sys_in.zz = feval(@map, te(end), ze(end, :)', sys_in); % make the jump
-                %dh = [0, 0, 2*sys.zz(3), 0, 0];  % A simple case, for testing
             case 2
                 dh = [0, 0, 0, 0, 1];
                 dg = eye(sys_in.nstatevars);

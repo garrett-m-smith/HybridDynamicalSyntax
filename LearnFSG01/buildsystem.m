@@ -1,10 +1,10 @@
 % Set initial parameter values
 
-sys.statecrit = 0;
+% sys.statecrit = 0;
 sys.timecrit = 40;  % Not sure what the best idea is here
 sys.weight0 = 0.00;  % Weight parameter;
-sys.act1_0 = 0.1; % Initial activation
-sys.act2_0 = 0.1; % Initial activation
+sys.act1_0 = 0.26; % Initial activation
+sys.act2_0 = 0.6; % Initial activation
 sys.param0 = 1;
 
 

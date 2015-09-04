@@ -10,10 +10,7 @@ levelmax = 4;
 %% Set up system
 buildsystem;  % This sets sys.zz0
 
-%% Specify a long time interval so criterion surface is reached (for testing full process)
-%  NOTE:  this must be done by hand in events06
-
-%% Set initial state
+% Set initial state
 init0 = sys.zz0(1:sys.nstatevars);
 
 %% Compute end0, i.e., without perturbations

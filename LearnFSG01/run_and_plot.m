@@ -1,13 +1,19 @@
 % Run sys_loc for a short time and plot trajectory
 
-sys_loc = sys;
+clear all; close all;
+buildsystem;
 
-njumps = 10;
-act_hist = [];
+sys_loc = sys;
+sys_loc.zz = sys_loc.zz0;
+
+njumps = 5;
+act1_hist = [];
+act2_hist = [];
 t_hist = [];
 options = odeset('Events', @events, 'AbsTol', 1e-8,'RelTol', 1e-8);
 
 jump_ct = 0;
+tstart = 0;
 
 while jump_ct < njumps
     fprintf('\nIntegrating vector field...');
@@ -22,17 +28,27 @@ while jump_ct < njumps
                 fprintf('\nMaking discrete state change...');
                 sys_loc.zz = feval(@map, te(end), ze(end, :)', sys_loc); % make the jump
                 jump_ct = jump_ct + 1;
-                %dh = [0, 0, 2*sys_loc.zz(3), 0, 0];  % A simple case, for testing
             case 2
                 jump_ct = jump_ct + 1;
         end;
     end;
     
-    act_hist = [act_hist, zzhist(:, 3)'];
+    act1_hist = [act1_hist, zzhist(:, 3)'];
+    act2_hist = [act2_hist, zzhist(:, 4)'];
     t_hist = [t_hist, zzhist(:, 5)'];
     
-    sys_loc.zz(sys_loc.index.input) = binornd(1, 0.5);
+%     sys_loc.zz(sys_loc.index.input) = binornd(1, 0.5);
+%     sys_loc.zz(sys_loc.index.
 end;
 
-plot(t_hist, act_hist);
-title('Activation over time');
+figure(1);
+plot(t_hist, act1_hist);
+title('Activation 1 over time');
+
+figure(2);
+plot(t_hist, act2_hist);
+title('Activation 2 over time');
+
+figure(3);
+plot(act1_hist, act2_hist);
+title('Phase portrait');

@@ -1,4 +1,4 @@
-function dmmat = dmap11(tt, zz, sys)
+function dmmat = dmap(tt, zz, sys)
 
 % DMAP (partial derivatives of discrete map functions with 
 % respect to discrete map variables)
