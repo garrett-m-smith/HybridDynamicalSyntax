@@ -5,3 +5,5 @@ Questions for Harry
 ---Is the field function for zz(5) (time) indeed 1?  (proj is mostly NaN if dz5/dt = 0)
 
 ---In Learn11a, the error drops quickly in learning, but then very slowly increase again. Why is this?
+
+---Why doesn't events.m have access to sys, even though it should, as it takes sys as an argument?

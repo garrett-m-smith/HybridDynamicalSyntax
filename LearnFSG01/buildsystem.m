@@ -1,10 +1,10 @@
 % Set initial parameter values
 
 % sys.statecrit = 0;
-sys.timecrit = 40;  % Not sure what the best idea is here
-sys.weight0 = 0.00;  % Weight parameter;
-sys.act1_0 = 0.26; % Initial activation
-sys.act2_0 = 0.6; % Initial activation
+sys.timecrit = 100;  % Not sure what the best idea is here
+% sys.weight0 = 0.00;  % Weight parameter;
+sys.act1_0 = 0.6; % Initial activation
+sys.act2_0 = 0.5; % Initial activation
 sys.param0 = 1;
 
 
@@ -25,6 +25,6 @@ sys.index.vari = (sys.nstatevars + 1):sys.nvars; % variational variables
 sys.zz0 = zeros(sys.nvars, 1); % zz stores all variables, including variational vars
 % Initialize state variables:
 % sys.zz0(1:sys.nstatevars) = [0; 0; sys.act1_0; sys.act2_0; sys.param0; 0];  % Error, Input, Activations, stability param, Time
-sys.zz0(1:sys.nstatevars) = [0; 0.01; sys.act1_0; sys.act2_0; 0];
+sys.zz0(1:sys.nstatevars) = [0; 0.1; sys.act1_0; sys.act2_0; 0];
 % Initialize variational variables:
 sys.zz0(sys.index.vari) = reshape(eye(sys.nstatevars), sys.nstatevars^2, 1);

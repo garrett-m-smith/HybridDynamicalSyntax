@@ -4,7 +4,6 @@ function dmmat = dmap(tt, zz, sys)
 % respect to discrete map variables)
 
 dmmat = eye(sys.nstatevars);
-%dmmat = zeros(sys.nstatevars, sys.nstatevars);
-
 dmmat(sys.index.act1, sys.index.act1) = 0;
+dmmat(sys.index.act1, sys.index.input) = 1;
 dmmat(sys.index.act2, sys.index.act2) = 0;

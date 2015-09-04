@@ -8,12 +8,13 @@ dz = zeros(sys.nvars, 1);
 dz(sys.index.error) = (0 - zz(sys.index.act1))^2 + (1 - zz(sys.index.act2))^2;
 
 % Flow:
-dz(sys.index.act1) = zz(sys.index.act1) * (1 - zz(sys.index.act1) - 1.1 * zz(sys.index.act2));
-dz(sys.index.act2) = zz(sys.index.act2) * (1 - zz(sys.index.act2) - 1.1 * zz(sys.index.act1));
+dz(sys.index.act1) = zz(sys.index.act1) * (zz(sys.index.input) - 1 * zz(sys.index.act1) - 2 * zz(sys.index.act2));
+% dz(sys.index.act1) = zz(sys.index.act1) * (1 - 3 * zz(sys.index.act1) - 2 * zz(sys.index.act2));
+dz(sys.index.act2) = zz(sys.index.act2) * (1 - 1 * zz(sys.index.act2) - 2 * zz(sys.index.act1));
 
 dz(sys.index.time) = 1;  %  Not what we had before, but seems sensible
 
-dzvarimat = dfield(tt, zz, sys) * reshape(zz(sys.index.vari), sys.nstatevars, sys.nstatevars);
-% dzvarimat = eye(sys.nstatevars);
+% dzvarimat = dfield(tt, zz, sys) * reshape(zz(sys.index.vari), sys.nstatevars, sys.nstatevars);
+dzvarimat = eye(sys.nstatevars);
 
 dz(sys.index.vari) = reshape(dzvarimat, sys.nstatevars^2, 1);
