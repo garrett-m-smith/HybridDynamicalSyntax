@@ -6,12 +6,12 @@ clear all; close all;
 buildsystem;
 
 %% Set up small fragment of XYZ language
-order_mat = [-1, -1, 1; % X
-             1, 0.5, 1; % Y
-             -1, -1, 1; % X
-             0.5, 1, 1; % Z
-             -1, -1, 1; % X
-             0.5, 1, 1]; % Z
+order_mat = [-1, -1; % X
+             1, 0.1; % Y
+             -1, -1; % X
+             0.1, 1; % Z
+             -1, -1; % X
+             0.1, 1]; % Z
 
 %% Initialize:
 sys_loc = sys; % local copy of sys
@@ -48,6 +48,7 @@ for jump_ct = 1:njumps
         fprintf('Timed out by sys.timecrit (no event)\n');
     end;
     
+    % Saving trajectories
     act1_hist = [act1_hist, zzhist(:, sys_loc.index.act1)'];
     act2_hist = [act2_hist, zzhist(:, sys_loc.index.act2)'];
     t_hist = [t_hist, zzhist(:, sys_loc.index.time)'];

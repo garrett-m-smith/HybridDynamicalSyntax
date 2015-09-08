@@ -43,7 +43,7 @@ while tstart < sys_in.timecrit
 %                     1 - 2 * sys_in.zz(sys_in.index.act2) + sys_in.zz(sys_in.index.act2)^2), ...
 %                     0.5 * (-2 + 2 * sys_in.zz(sys_in.index.act2)) / sqrt(sys_in.zz(sys_in.index.act1)^2 + ...
 %                     1 - 2 * sys_in.zz(sys_in.index.act2) + sys_in.zz(sys_in.index.act2)^2), 0];
-                dh = devfsg(tt, sys_in.zz, sys_in);
+%                 dh = devfsg(tt, sys_in.zz, sys_in);
                 dg = feval(@dmap, te(end), ze(end, :)', sys_in); % deriv of map
                 sys_in.zz = feval(@map, te(end), ze(end, :)', sys_in); % make the jump
             case 2
