@@ -14,7 +14,7 @@ function sysout = runsystem_sub(sys_in)
 %% Initialize
 
 % Prepare for event handling
-options = odeset('Events', @events, 'AbsTol', 1e-8,'RelTol', 1e-8);
+options = odeset('Events', @eventsfsg, 'AbsTol', 1e-8,'RelTol', 1e-8);
 
 sys_in.zz = sys_in.zz0;  % sys.zz0 set in controlling program
 %zzstart11pre = sys.zz0;
@@ -39,10 +39,11 @@ while tstart < sys_in.timecrit
         switch ie(end)
             case 1
                 % deriv of event fn.:
-                dh = [0, 0, sys_in.zz(sys_in.index.act1) / sqrt(sys_in.zz(sys_in.index.act1)^2 + ...
-                    1 - 2 * sys_in.zz(sys_in.index.act2) + sys_in.zz(sys_in.index.act2)^2), ...
-                    0.5 * (-2 + 2 * sys_in.zz(sys_in.index.act2)) / sqrt(sys_in.zz(sys_in.index.act1)^2 + ...
-                    1 - 2 * sys_in.zz(sys_in.index.act2) + sys_in.zz(sys_in.index.act2)^2), 0];
+%                 dh = [0, 0, sys_in.zz(sys_in.index.act1) / sqrt(sys_in.zz(sys_in.index.act1)^2 + ...
+%                     1 - 2 * sys_in.zz(sys_in.index.act2) + sys_in.zz(sys_in.index.act2)^2), ...
+%                     0.5 * (-2 + 2 * sys_in.zz(sys_in.index.act2)) / sqrt(sys_in.zz(sys_in.index.act1)^2 + ...
+%                     1 - 2 * sys_in.zz(sys_in.index.act2) + sys_in.zz(sys_in.index.act2)^2), 0];
+                dh = devfsg(tt, sys_in.zz, sys_in);
                 dg = feval(@dmap, te(end), ze(end, :)', sys_in); % deriv of map
                 sys_in.zz = feval(@map, te(end), ze(end, :)', sys_in); % make the jump
             case 2

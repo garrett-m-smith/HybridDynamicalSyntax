@@ -1,9 +1,11 @@
 % Exercise: generate vector field for 2D ODE using ode45
+clear all; close all;
+buildsystem;
 
 sys.zz = sys.zz0;
 
-z1 = linspace(0, 2.2, 20); % similar to a:step:b
-z2 = linspace(0, 1, 20);
+z1 = linspace(0, 1.1, 20); % similar to a:step:b
+z2 = linspace(0, 1.1, 20);
 [x, y] = meshgrid(z1, z2);
 dz1 = zeros(size(x));
 dz2 = zeros(size(x));

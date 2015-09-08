@@ -1,63 +1,73 @@
-% Run sys_loc for a short time and plot trajectory
+%% Run sys_loc for a short time and plot trajectory
+% Goal: provide input symbols, look up params in array. 
 
 % Comment out after training:
 clear all; close all;
 buildsystem;
 
-%% Initialize:
-sys_loc = sys;
-sys_loc.zz = sys_loc.zz0;
-sys_loc.zz(sys_loc.index.act1) = sys_loc.zz(sys_loc.index.act1) + sys_loc.zz(sys.index.input);
+%% Set up small fragment of XYZ language
+order_mat = [-1, -1, 1; % X
+             1, 0.5, 1; % Y
+             -1, -1, 1; % X
+             0.5, 1, 1; % Z
+             -1, -1, 1; % X
+             0.5, 1, 1]; % Z
 
-njumps = 5;
+%% Initialize:
+sys_loc = sys; % local copy of sys
+sys_loc.zz = sys_loc.zz0;
+
+njumps = nrows(order_mat);
 act1_hist = [];
 act2_hist = [];
 t_hist = [];
-options = odeset('Events', @events, 'AbsTol', 1e-8,'RelTol', 1e-8);
+options = odeset('Events', @eventsfsg, 'AbsTol', 1e-8,'RelTol', 1e-8);
 
 jump_ct = 0;
 tstart = 0;
 
 %% Run:
-while jump_ct < njumps
-    fprintf('\nIntegrating vector field...');
+for jump_ct = 1:njumps
+    % Set input:
+    sys_loc.zz(sys.index.input) = order_mat(jump_ct, :);
+    
+    fprintf('Integrating vector field...\n');
     [tt, zzhist, te, ze, ie] = ode45(@(tt, zz) field(tt, zz, sys_loc), [tstart, sys_loc.timecrit], sys_loc.zz, options); 
     sys_loc.zz = zzhist(end, :)';
     
     if ~isempty(ie)
         switch ie(end)
             case 1
-                fprintf('\nMaking discrete state change...');
+                fprintf('Making discrete state change...\n');
                 sys_loc.zz = feval(@map, te(end), ze(end, :)', sys_loc); % make the jump
                 jump_ct = jump_ct + 1;
             case 2
-%                 jump_ct = jump_ct + 1;
                 fprintf('Timed out in event function: t = %.3f\n', te);
         end;
     else
         fprintf('Timed out by sys.timecrit (no event)\n');
     end;
     
-    act1_hist = [act1_hist, zzhist(:, 3)'];
-    act2_hist = [act2_hist, zzhist(:, 4)'];
-    t_hist = [t_hist, zzhist(:, 5)'];
-    
-%     if mod(jump_ct, 2)
-%         sys_loc.zz(sys_loc.index.input) = 0.1;
-%     else
-%         sys_loc.zz(sys_loc.index.input) = 2.1;
-%     end;
+    act1_hist = [act1_hist, zzhist(:, sys_loc.index.act1)'];
+    act2_hist = [act2_hist, zzhist(:, sys_loc.index.act2)'];
+    t_hist = [t_hist, zzhist(:, sys_loc.index.time)'];
 end;
 
 %% Plotting:
 figure(1);
 plot(t_hist, act1_hist);
 title('Activation 1 over time');
+xlabel('Time');
+ylabel('act_1');
 
 figure(2);
 plot(t_hist, act2_hist);
 title('Activation 2 over time');
+xlabel('Time');
+ylabel('act_2');
 
 figure(3);
 plot(act1_hist, act2_hist);
 title('Phase portrait');
+xlabel('act_1');
+ylabel('act_2');

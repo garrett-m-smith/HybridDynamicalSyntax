@@ -1,4 +1,4 @@
-Questions for Harry
+Questions for Harry/Whit
 
 ---Why don't we use the built-in symbolic derivative and jacobian functions instead of doing it by hand?
 
@@ -7,3 +7,5 @@ Questions for Harry
 ---In Learn11a, the error drops quickly in learning, but then very slowly increase again. Why is this?
 
 ---Why doesn't events.m have access to sys, even though it should, as it takes sys as an argument?
+
+---Need an error fn. that works for all fixed points. Could have a different one determined by the input, but that seems clunky.
